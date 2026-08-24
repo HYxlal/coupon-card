@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小猫猫的摸摸券银行</title>
+<style>
+:root {
+  --bg: #f9f6f1;
+  --card: #ffffff;
+  --text: #3d3226;
+  --sub: #9b8c7c;
+  --accent: #e8836b;
+  --accent-hover: #d4725a;
+  --border: #e8e0d5;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* Balance */
+.balance-section {
+  text-align: center;
+  padding: 40px 20px 24px;
+}
+
+.balance-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.balance-amount {
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  transition: transform 0.3s;
+}
+
+.balance-amount.pop { animation: pop 0.4s ease; }
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.balance-unit {
+  font-size: 15px;
+  color: var(--sub);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+/* Admin bar */
+.admin-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.admin-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--sub);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.admin-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Service cards */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.service-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1.5px solid transparent;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+
+.service-card:active {
+  transform: scale(0.97);
+}
+
+.service-card .icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.service-card .name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.service-card .price {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.service-card .price span {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.service-card.add-card {
+  border-style: dashed;
+  border-color: var(--border);
+  opacity: 0.7;
+}
+
+.service-card.add-card:hover {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+  animation: slideUp 0.3s ease;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.modal .modal-icon {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.modal label {
+  display: block;
+  font-size: 13px;
+  color: var(--sub);
+  margin-bottom: 6px;
+}
+
+.modal input, .modal textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 12px;
+  resize: vertical;
+}
+
+.modal input:focus, .modal textarea:focus {
+  border-color: var(--accent);
+}
+
+.modal .modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.modal .btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.modal .btn-cancel {
+  background: var(--bg);
+  color: var(--sub);
+}
+
+.modal .btn-cancel:hover {
+  background: var(--border);
+}
+
+.modal .btn-confirm {
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal .btn-confirm:hover {
+  background: var(--accent-hover);
+}
+
+.modal .btn-delete {
+  background: none;
+  color: #c62828;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 8px;
+  margin-top: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+}
+
+.modal .price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.modal .price-row input {
+  width: 80px;
+  margin-bottom: 0;
+}
+
+.modal .price-row span {
+  color: var(--sub);
+  font-size: 14px;
+}
+
+/* History */
+.history-section {
+  margin-top: 8px;
+}
+
+.history-title {
+  font-size: 14px;
+  color: var(--sub);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+  font-size: 14px;
+}
+
+.history-item .hi-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.history-item .hi-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-item .hi-name {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-item .hi-time {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.history-item .hi-cost {
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.history-empty {
+  text-align: center;
+  color: var(--sub);
+  font-size: 14px;
+  padding: 20px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.toast.show { opacity: 1; }
+
+/* Confetti */
+.confetti-piece {
+  position: fixed;
+  z-index: 150;
+  pointer-events: none;
+  animation: confettiFall 1.5s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@media (max-width: 400px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .balance-amount { font-size: 56px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="balance-section">
+    <div class="balance-title">🐱 小猫猫的摸摸券银行</div>
+    <div class="balance-amount" id="balance">20</div>
+    <div class="balance-unit">张 摸 摸 券</div>
+  </div>
+
+  <div class="admin-bar">
+    <button class="admin-btn" onclick="adjustCoupons(1)">+ 发券</button>
+    <button class="admin-btn" onclick="adjustCoupons(-1)">- 减券</button>
+    <button class="admin-btn" onclick="resetAll()">重置</button>
+  </div>
+
+  <div class="services-grid" id="servicesGrid"></div>
+
+  <div class="history-section">
+    <div class="history-title">兑 换 记 录</div>
+    <div id="historyList"></div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon"></div>
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn btn-confirm" id="confirmBtn" onclick="confirmRedeem()">确认兑换</button>
+    </div>
+    <button class="btn-delete" id="deleteBtn" style="display:none" onclick="deleteService()">删除这个服务</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ 配置 ============
+const SERVER_KEY = 'SCT403508TEFSic7kAfmNpYi22Zxku0ID7';
+
+const DEFAULT_SERVICES = [
+  { id: 'touch', name: '摸摸10分钟', icon: '🤲', price: 1 },
+  { id: 'hug', name: '抱抱', icon: '🤗', price: 1 },
+  { id: 'kiss', name: '亲亲', icon: '💋', price: 1 },
+  { id: 'errand', name: '跑腿服务', icon: '🏃', price: 1 },
+  { id: 'chores', name: '做家务', icon: '🧹', price: 3 },
+  { id: 'cheer', name: '哄开心', icon: '🎤', price: 3 },
+];
+
+const INITIAL_COUPONS = 20;
+
+// ============ 状态 ============
+let coupons = INITIAL_COUPONS;
+let services = [];
+let customServices = [];
+let history = [];
+let currentService = null;
+
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem('coupon_state'));
+    if (d) {
+      coupons = d.coupons ?? INITIAL_COUPONS;
+      history = d.history ?? [];
+      customServices = d.customServices ?? [];
+    }
+  } catch(e) {}
+  services = [...DEFAULT_SERVICES, ...customServices];
+}
+
+function save() {
+  localStorage.setItem('coupon_state', JSON.stringify({ coupons, history, customServices }));
+}
+
+// ============ 渲染 ============
+function renderBalance() {
+  const el = document.getElementById('balance');
+  el.textContent = coupons;
+  el.classList.remove('pop');
+  void el.offsetWidth;
+  el.classList.add('pop');
+}
+
+function renderServices() {
+  services = [...DEFAULT_SERVICES, ...customServices];
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = services.map(s => {
+    const priceText = s.price === 0 ? '自定义' : `<span>${s.price}</span> 张`;
+    const isCustom = !DEFAULT_SERVICES.find(d => d.id === s.id);
+    return `<div class="service-card" onclick="openRedeem('${s.id}')">
+      <span class="icon">${s.icon}</span>
+      <div class="name">${s.name}${isCustom ? '' : ''}</div>
+      <div class="price">${priceText}</div>
+    </div>`;
+  }).join('') + `
+    <div class="service-card add-card" onclick="openAddService()">
+      <span class="icon">➕</span>
+      <div class="name">添加服务</div>
+      <div class="price">自定义</div>
+    </div>`;
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (history.length === 0) {
+    list.innerHTML = '<div class="history-empty">还没有兑换记录</div>';
+    return;
+  }
+  list.innerHTML = history.slice().reverse().map(h => `
+    <div class="history-item">
+      <span class="hi-icon">${h.icon}</span>
+      <div class="hi-info">
+        <div class="hi-name">${h.name}${h.detail ? ' · ' + h.detail : ''}</div>
+        <div class="hi-time">${h.time}</div>
+      </div>
+      <div class="hi-cost">-${h.cost}</div>
+    </div>
+  `).join('');
+}
+
+function renderAll() {
+  renderBalance();
+  renderServices();
+  renderHistory();
+}
+
+// ============ 兑换 ============
+function openRedeem(id) {
+  const s = services.find(x => x.id === id);
+  if (!s) return;
+  currentService = s;
+  document.getElementById('modalIcon').textContent = s.icon;
+  document.getElementById('modalTitle').textContent = s.name;
+
+  const isCustom = !DEFAULT_SERVICES.find(d => d.id === s.id);
+  document.getElementById('deleteBtn').style.display = isCustom ? 'block' : 'none';
+
+  const body = document.getElementById('modalBody');
+  body.innerHTML = `
+    <div class="price-row">
+      <label style="margin-bottom:0;white-space:nowrap">价格：</label>
+      <input type="number" id="redeemPrice" value="${s.price}" min="0" max="${coupons}">
+      <span>张</span>
+    </div>
+    <label>备注（可选）</label>
+    <input type="text" id="redeemNote" placeholder="比如：帮我按摩肩膀">
+  `;
+
+  document.getElementById('modal').classList.add('active');
+  setTimeout(() => document.getElementById('redeemPrice').focus(), 300);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  currentService = null;
+}
+
+function confirmRedeem() {
+  if (!currentService) return;
+
+  const cost = parseInt(document.getElementById('redeemPrice').value) || 0;
+  const note = document.getElementById('redeemNote').value.trim();
+
+  if (cost <= 0) { showToast('价格至少1张'); return; }
+  if (coupons < cost) {
+    showToast(`摸摸券不足！需要 ${cost} 张，当前只有 ${coupons} 张`);
+    return;
+  }
+
+  coupons -= cost;
+
+  const now = new Date();
+  const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  history.push({
+    icon: currentService.icon,
+    name: currentService.name,
+    detail: note,
+    cost,
+    time: timeStr,
+  });
+
+  save();
+  renderAll();
+  closeModal();
+  spawnConfetti();
+  showToast(`兑换成功！消耗 ${cost} 张摸摸券`);
+  sendNotification(currentService, cost, note);
+}
+
+// ============ 添加/删除服务 ============
+function openAddService() {
+  currentService = null;
+  document.getElementById('modalIcon').textContent = '➕';
+  document.getElementById('modalTitle').textContent = '添加服务';
+  document.getElementById('deleteBtn').style.display = 'none';
+
+  const body = document.getElementById('modalBody');
+  body.innerHTML = `
+    <label>图标（emoji）</label>
+    <input type="text" id="newIcon" value="🎁" placeholder="选一个emoji">
+    <label>服务名称</label>
+    <input type="text" id="newName" placeholder="比如：帮我按摩">
+    <div class="price-row">
+      <label style="margin-bottom:0;white-space:nowrap">默认价格：</label>
+      <input type="number" id="newPrice" value="1" min="1">
+      <span>张</span>
+    </div>
+  `;
+
+  document.getElementById('confirmBtn').textContent = '添加';
+  document.getElementById('confirmBtn').onclick = confirmAddService;
+  document.getElementById('modal').classList.add('active');
+}
+
+function confirmAddService() {
+  const icon = document.getElementById('newIcon').value.trim() || '🎁';
+  const name = document.getElementById('newName').value.trim();
+  const price = parseInt(document.getElementById('newPrice').value) || 1;
+
+  if (!name) { showToast('请填写服务名称'); return; }
+
+  const id = 'custom_' + Date.now();
+  customServices.push({ id, name, icon, price });
+  save();
+  renderAll();
+  closeModal();
+  showToast(`已添加「${name}」`);
+  resetConfirmBtn();
+}
+
+function deleteService() {
+  if (!currentService) return;
+  if (!confirm(`确定删除「${currentService.name}」吗？`)) return;
+  customServices = customServices.filter(s => s.id !== currentService.id);
+  save();
+  renderAll();
+  closeModal();
+  showToast('已删除');
+}
+
+function resetConfirmBtn() {
+  document.getElementById('confirmBtn').textContent = '确认兑换';
+  document.getElementById('confirmBtn').onclick = confirmRedeem;
+}
+
+// ============ 通知 ============
+function sendNotification(service, cost, detail) {
+  if (!SERVER_KEY) return;
+
+  const title = `她兑换了「${service.name}」`;
+  const content = detail
+    ? `服务：${detail}\n消耗：${cost} 张摸摸券\n剩余：${coupons} 张`
+    : `消耗：${cost} 张摸摸券\n剩余：${coupons} 张`;
+
+  fetch(`https://sctapi.ftqq.com/${SERVER_KEY}.send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, desp: content }),
+  }).catch(() => {});
+}
+
+// ============ 管理 ============
+function adjustCoupons(dir) {
+  const label = dir > 0 ? '发几张？' : '减几张？';
+  const n = parseInt(prompt(label, '5'));
+  if (n > 0) {
+    coupons += n * dir;
+    if (coupons < 0) coupons = 0;
+    save();
+    renderAll();
+    showToast(dir > 0 ? `已发放 ${n} 张` : `已减少 ${n} 张`);
+  }
+}
+
+function resetAll() {
+  if (confirm('确定要重置所有数据吗？')) {
+    coupons = INITIAL_COUPONS;
+    history = [];
+    customServices = [];
+    save();
+    renderAll();
+    showToast('已重置');
+  }
+}
+
+// ============ 特效 ============
+function spawnConfetti() {
+  const colors = ['#e8836b', '#ffb6a3', '#ffd700', '#7d9b76', '#ff9ebb', '#ffab91'];
+  for (let i = 0; i < 30; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = (30 + Math.random() * 40) + '%';
+    el.style.top = (20 + Math.random() * 10) + '%';
+    el.style.width = (6 + Math.random() * 6) + 'px';
+    el.style.height = (6 + Math.random() * 6) + 'px';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDuration = (1 + Math.random() * 1.5) + 's';
+    el.style.animationDelay = Math.random() * 0.3 + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2000);
+  }
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ============ 初始化 ============
+load();
+renderAll();
+</script>
+</body>
+</html>
