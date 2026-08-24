@@ -655,16 +655,14 @@ function resetConfirmBtn() {
 function sendNotification(service, cost, detail) {
   if (!SERVER_KEY) return;
 
-  const title = `她兑换了「${service.name}」`;
-  const content = detail
+  const title = encodeURIComponent(`她兑换了「${service.name}」`);
+  const content = encodeURIComponent(detail
     ? `服务：${detail}\n消耗：${cost} 张摸摸券\n剩余：${coupons} 张`
-    : `消耗：${cost} 张摸摸券\n剩余：${coupons} 张`;
+    : `消耗：${cost} 张摸摸券\n剩余：${coupons} 张`);
 
-  fetch(`https://sctapi.ftqq.com/${SERVER_KEY}.send`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, desp: content }),
-  }).catch(() => {});
+  const url = `https://sctapi.ftqq.com/${SERVER_KEY}.send?title=${title}&desp=${content}`;
+  const img = new Image();
+  img.src = url;
 }
 
 // ============ 管理 ============
