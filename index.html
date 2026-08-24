@@ -13,6 +13,7 @@
   --accent: #e8836b;
   --accent-hover: #d4725a;
   --border: #e8e0d5;
+  --green: #7d9b76;
   --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
   --shadow-lg: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
   --radius: 14px;
@@ -36,18 +37,32 @@ body {
   padding: 32px 20px 60px;
 }
 
-/* Balance */
-.balance-section {
+/* Header */
+.header {
   text-align: center;
-  padding: 40px 20px 24px;
+  padding: 20px 0 10px;
+  position: relative;
 }
 
-.balance-title {
+.header-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 2px;
-  margin-bottom: 16px;
+}
+
+.header-dog {
+  display: block;
+  margin: 8px auto 0;
+  width: 80px;
+  height: 80px;
+  image-rendering: auto;
+}
+
+/* Balance */
+.balance-section {
+  text-align: center;
+  padding: 16px 20px 24px;
 }
 
 .balance-amount {
@@ -79,10 +94,11 @@ body {
   justify-content: center;
   gap: 8px;
   margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
 .admin-btn {
-  padding: 6px 16px;
+  padding: 6px 14px;
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--card);
@@ -96,6 +112,140 @@ body {
 .admin-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* Section titles */
+.section-title {
+  font-size: 14px;
+  color: var(--sub);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.section-title::before, .section-title::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Messages */
+.messages-section {
+  margin-bottom: 28px;
+}
+
+.message-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  border-left: 3px solid var(--accent);
+  position: relative;
+}
+
+.message-card .msg-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.message-card .msg-time {
+  font-size: 12px;
+  color: var(--sub);
+  margin-top: 8px;
+}
+
+.message-empty {
+  text-align: center;
+  color: var(--sub);
+  font-size: 14px;
+  padding: 16px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Tasks */
+.tasks-section {
+  margin-bottom: 28px;
+}
+
+.task-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-card .task-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.task-card .task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-card .task-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.task-card .task-progress {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.task-card .task-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.task-card .task-progress-bar .fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.task-card .task-btn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.task-card .task-btn:hover {
+  background: var(--accent-hover);
+}
+
+.task-card .task-btn:active {
+  transform: scale(0.95);
 }
 
 /* Service cards */
@@ -116,7 +266,6 @@ body {
   border: 1.5px solid transparent;
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
 .service-card:hover {
@@ -125,9 +274,7 @@ body {
   border-color: var(--accent);
 }
 
-.service-card:active {
-  transform: scale(0.97);
-}
+.service-card:active { transform: scale(0.97); }
 
 .service-card .icon {
   font-size: 36px;
@@ -159,10 +306,7 @@ body {
   opacity: 0.7;
 }
 
-.service-card.add-card:hover {
-  opacity: 1;
-  border-color: var(--accent);
-}
+.service-card.add-card:hover { opacity: 1; border-color: var(--accent); }
 
 /* Modal */
 .modal-overlay {
@@ -232,9 +376,7 @@ body {
   resize: vertical;
 }
 
-.modal input:focus, .modal textarea:focus {
-  border-color: var(--accent);
-}
+.modal input:focus, .modal textarea:focus { border-color: var(--accent); }
 
 .modal .modal-actions {
   display: flex;
@@ -254,23 +396,10 @@ body {
   font-family: inherit;
 }
 
-.modal .btn-cancel {
-  background: var(--bg);
-  color: var(--sub);
-}
-
-.modal .btn-cancel:hover {
-  background: var(--border);
-}
-
-.modal .btn-confirm {
-  background: var(--accent);
-  color: #fff;
-}
-
-.modal .btn-confirm:hover {
-  background: var(--accent-hover);
-}
+.modal .btn-cancel { background: var(--bg); color: var(--sub); }
+.modal .btn-cancel:hover { background: var(--border); }
+.modal .btn-confirm { background: var(--accent); color: #fff; }
+.modal .btn-confirm:hover { background: var(--accent-hover); }
 
 .modal .btn-delete {
   background: none;
@@ -292,29 +421,10 @@ body {
   margin-bottom: 12px;
 }
 
-.modal .price-row input {
-  width: 80px;
-  margin-bottom: 0;
-}
-
-.modal .price-row span {
-  color: var(--sub);
-  font-size: 14px;
-}
+.modal .price-row input { width: 80px; margin-bottom: 0; }
+.modal .price-row span { color: var(--sub); font-size: 14px; }
 
 /* History */
-.history-section {
-  margin-top: 8px;
-}
-
-.history-title {
-  font-size: 14px;
-  color: var(--sub);
-  letter-spacing: 2px;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
 .history-item {
   display: flex;
   align-items: center;
@@ -327,16 +437,8 @@ body {
   font-size: 14px;
 }
 
-.history-item .hi-icon {
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.history-item .hi-info {
-  flex: 1;
-  min-width: 0;
-}
-
+.history-item .hi-icon { font-size: 24px; flex-shrink: 0; }
+.history-item .hi-info { flex: 1; min-width: 0; }
 .history-item .hi-name {
   font-weight: 600;
   color: var(--text);
@@ -344,23 +446,18 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.history-item .hi-time {
-  font-size: 12px;
-  color: var(--sub);
-}
-
-.history-item .hi-cost {
-  font-weight: 600;
-  color: var(--accent);
-  flex-shrink: 0;
-}
+.history-item .hi-time { font-size: 12px; color: var(--sub); }
+.history-item .hi-cost { font-weight: 600; color: var(--accent); flex-shrink: 0; }
+.history-item .hi-earn { font-weight: 600; color: var(--green); flex-shrink: 0; }
 
 .history-empty {
   text-align: center;
   color: var(--sub);
   font-size: 14px;
   padding: 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 /* Toast */
@@ -405,8 +502,12 @@ body {
 
 <div class="container">
 
+  <div class="header">
+    <div class="header-title">🐱 小猫猫的摸摸券银行</div>
+    <img class="header-dog" id="headerDog" alt="线条小狗" src="">
+  </div>
+
   <div class="balance-section">
-    <div class="balance-title">🐱 小猫猫的摸摸券银行</div>
     <div class="balance-amount" id="balance">20</div>
     <div class="balance-unit">张 摸 摸 券</div>
   </div>
@@ -414,18 +515,33 @@ body {
   <div class="admin-bar">
     <button class="admin-btn" onclick="adjustCoupons(1)">+ 发券</button>
     <button class="admin-btn" onclick="adjustCoupons(-1)">- 减券</button>
+    <button class="admin-btn" onclick="openWriteMessage()">✎ 留言</button>
     <button class="admin-btn" onclick="resetAll()">重置</button>
   </div>
 
+  <!-- 留言板 -->
+  <div class="messages-section" id="messagesSection">
+    <div class="section-title">💌 留言板</div>
+    <div id="messagesList"></div>
+  </div>
+
+  <!-- 任务 -->
+  <div class="tasks-section" id="tasksSection">
+    <div class="section-title">🎯 每日任务</div>
+    <div id="tasksList"></div>
+  </div>
+
+  <!-- 服务卡片 -->
+  <div class="section-title">🛒 兑换服务</div>
   <div class="services-grid" id="servicesGrid"></div>
 
-  <div class="history-section">
-    <div class="history-title">兑 换 记 录</div>
-    <div id="historyList"></div>
-  </div>
+  <!-- 兑换记录 -->
+  <div class="section-title">📋 兑换记录</div>
+  <div id="historyList"></div>
 
 </div>
 
+<!-- 通用弹窗 -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-icon" id="modalIcon"></div>
@@ -456,12 +572,153 @@ const DEFAULT_SERVICES = [
 
 const INITIAL_COUPONS = 20;
 
+// ============ 线条小狗绘制 ============
+function drawLineDog() {
+  const c = document.createElement('canvas');
+  c.width = 160; c.height = 160;
+  const t = c.getContext('2d');
+  t.imageSmoothingEnabled = true;
+  t.scale(2, 2);
+
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 2;
+  t.lineCap = 'round';
+  t.lineJoin = 'round';
+  t.fillStyle = '#fff';
+
+  // 身体
+  t.beginPath();
+  t.ellipse(40, 55, 20, 16, 0, 0, Math.PI * 2);
+  t.fill();
+  t.stroke();
+
+  // 头
+  t.beginPath();
+  t.ellipse(40, 30, 16, 14, 0, 0, Math.PI * 2);
+  t.fill();
+  t.stroke();
+
+  // 左耳
+  t.fillStyle = '#FFE0B2';
+  t.beginPath();
+  t.moveTo(28, 22);
+  t.lineTo(22, 10);
+  t.lineTo(34, 20);
+  t.closePath();
+  t.fill();
+  t.stroke();
+
+  // 右耳
+  t.beginPath();
+  t.moveTo(52, 22);
+  t.lineTo(58, 10);
+  t.lineTo(46, 20);
+  t.closePath();
+  t.fill();
+  t.stroke();
+
+  // 眼睛
+  t.fillStyle = '#4a3728';
+  t.beginPath();
+  t.arc(35, 28, 3, 0, Math.PI * 2);
+  t.fill();
+  t.beginPath();
+  t.arc(47, 28, 3, 0, Math.PI * 2);
+  t.fill();
+
+  // 鼻子
+  t.beginPath();
+  t.arc(41, 32, 2.5, 0, Math.PI * 2);
+  t.fill();
+
+  // 嘴
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 1.5;
+  t.beginPath();
+  t.moveTo(41, 34);
+  t.lineTo(38, 37);
+  t.moveTo(41, 34);
+  t.lineTo(44, 37);
+  t.stroke();
+
+  // 腮红
+  t.fillStyle = 'rgba(255,150,150,0.5)';
+  t.beginPath();
+  t.arc(30, 33, 4, 0, Math.PI * 2);
+  t.fill();
+  t.beginPath();
+  t.arc(52, 33, 4, 0, Math.PI * 2);
+  t.fill();
+
+  // 前腿
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 2;
+  t.beginPath();
+  t.moveTo(30, 65);
+  t.lineTo(26, 75);
+  t.moveTo(48, 65);
+  t.lineTo(52, 75);
+  t.stroke();
+
+  // 尾巴
+  t.beginPath();
+  t.moveTo(58, 48);
+  t.quadraticCurveTo(68, 38, 64, 28);
+  t.stroke();
+
+  return c.toDataURL();
+}
+
+document.getElementById('headerDog').src = drawLineDog();
+
+// ============ 音效 ============
+function playSound(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (type === 'redeem') {
+      // 兑换成功：上升三连音
+      [523, 659, 784].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.1);
+        gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + i * 0.1 + 0.05);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.1 + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.1);
+        osc.stop(ctx.currentTime + i * 0.1 + 0.3);
+      });
+    } else if (type === 'earn') {
+      // 赚券：叮咚
+      [880, 1100].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
+        gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + i * 0.12 + 0.04);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.12 + 0.25);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.12);
+        osc.stop(ctx.currentTime + i * 0.12 + 0.25);
+      });
+    }
+  } catch(e) {}
+}
+
 // ============ 状态 ============
 let coupons = INITIAL_COUPONS;
 let services = [];
 let customServices = [];
 let history = [];
+let messages = [];
+let mealRecords = [];
+let mealsGranted = 0;
 let currentService = null;
+let modalMode = null;
 
 function load() {
   try {
@@ -470,16 +727,125 @@ function load() {
       coupons = d.coupons ?? INITIAL_COUPONS;
       history = d.history ?? [];
       customServices = d.customServices ?? [];
+      messages = d.messages ?? [];
+      mealRecords = d.mealRecords ?? [];
+      mealsGranted = d.mealsGranted ?? 0;
     }
   } catch(e) {}
   services = [...DEFAULT_SERVICES, ...customServices];
 }
 
 function save() {
-  localStorage.setItem('coupon_state', JSON.stringify({ coupons, history, customServices }));
+  localStorage.setItem('coupon_state', JSON.stringify({
+    coupons, history, customServices, messages, mealRecords, mealsGranted
+  }));
+}
+
+// ============ 线条小狗 ============
+function drawLineDog() {
+  const c = document.createElement('canvas');
+  c.width = 160; c.height = 160;
+  const t = c.getContext('2d');
+  t.imageSmoothingEnabled = true;
+  t.scale(2, 2);
+
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 2;
+  t.lineCap = 'round';
+  t.lineJoin = 'round';
+
+  // 身体
+  t.fillStyle = '#fff';
+  t.beginPath();
+  t.ellipse(40, 55, 20, 16, 0, 0, Math.PI * 2);
+  t.fill();
+  t.stroke();
+
+  // 头
+  t.beginPath();
+  t.ellipse(40, 30, 16, 14, 0, 0, Math.PI * 2);
+  t.fill();
+  t.stroke();
+
+  // 耳朵
+  t.fillStyle = '#FFE0B2';
+  t.beginPath();
+  t.moveTo(28, 22);
+  t.lineTo(22, 10);
+  t.lineTo(34, 20);
+  t.closePath();
+  t.fill();
+  t.stroke();
+  t.beginPath();
+  t.moveTo(52, 22);
+  t.lineTo(58, 10);
+  t.lineTo(46, 20);
+  t.closePath();
+  t.fill();
+  t.stroke();
+
+  // 眼睛
+  t.fillStyle = '#4a3728';
+  t.beginPath();
+  t.arc(35, 28, 3, 0, Math.PI * 2);
+  t.fill();
+  t.beginPath();
+  t.arc(47, 28, 3, 0, Math.PI * 2);
+  t.fill();
+
+  // 鼻子
+  t.beginPath();
+  t.arc(41, 32, 2.5, 0, Math.PI * 2);
+  t.fill();
+
+  // 嘴
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 1.5;
+  t.beginPath();
+  t.moveTo(41, 34);
+  t.lineTo(38, 37);
+  t.moveTo(41, 34);
+  t.lineTo(44, 37);
+  t.stroke();
+
+  // 腮红
+  t.fillStyle = 'rgba(255,150,150,0.5)';
+  t.beginPath();
+  t.arc(30, 33, 4, 0, Math.PI * 2);
+  t.fill();
+  t.beginPath();
+  t.arc(52, 33, 4, 0, Math.PI * 2);
+  t.fill();
+
+  // 前腿
+  t.strokeStyle = '#4a3728';
+  t.lineWidth = 2;
+  t.beginPath();
+  t.moveTo(30, 65);
+  t.lineTo(26, 75);
+  t.moveTo(48, 65);
+  t.lineTo(52, 75);
+  t.stroke();
+
+  // 尾巴
+  t.beginPath();
+  t.moveTo(58, 48);
+  t.quadraticCurveTo(68, 38, 64, 28);
+  t.stroke();
+
+  return c.toDataURL();
 }
 
 // ============ 渲染 ============
+function renderAll() {
+  services = [...DEFAULT_SERVICES, ...customServices];
+  renderBalance();
+  renderMessages();
+  renderTasks();
+  renderServices();
+  renderHistory();
+}
+
 function renderBalance() {
   const el = document.getElementById('balance');
   el.textContent = coupons;
@@ -488,15 +854,53 @@ function renderBalance() {
   el.classList.add('pop');
 }
 
+function renderMessages() {
+  const list = document.getElementById('messagesList');
+  if (messages.length === 0) {
+    list.innerHTML = '<div class="message-empty">还没有留言，等待他的小纸条~</div>';
+    return;
+  }
+  list.innerHTML = messages.slice().reverse().slice(0, 5).map(m => `
+    <div class="message-card">
+      <div class="msg-text">${m.text.replace(/\n/g, '<br>')}</div>
+      <div class="msg-time">${m.time}</div>
+    </div>
+  `).join('');
+}
+
+function renderTasks() {
+  const today = new Date().toLocaleDateString('zh-CN');
+  const todayMeals = mealRecords.filter(r => r.date === today);
+  const mealCount = todayMeals.length;
+  const target = 3;
+  const progress = Math.min(mealCount % target || (mealCount === 0 ? 0 : target), target);
+  // 实际进度：当前周期内已记录数
+  const cycleIndex = Math.floor(mealsGranted / target);
+  const cycleMeals = mealCount - cycleIndex * target;
+  const cycleProgress = Math.min(cycleMeals, target);
+
+  document.getElementById('tasksList').innerHTML = `
+    <div class="task-card">
+      <span class="task-icon">🍽️</span>
+      <div class="task-info">
+        <div class="task-name">记录今天吃了什么</div>
+        <div class="task-progress">每记 ${target} 餐得 1 张券 · 今日进度 ${cycleProgress}/${target}</div>
+        <div class="task-progress-bar">
+          <div class="fill" style="width:${(cycleProgress/target)*100}%"></div>
+        </div>
+      </div>
+      <button class="task-btn" onclick="openRecordMeal()">记一笔</button>
+    </div>
+  `;
+}
+
 function renderServices() {
-  services = [...DEFAULT_SERVICES, ...customServices];
   const grid = document.getElementById('servicesGrid');
   grid.innerHTML = services.map(s => {
     const priceText = s.price === 0 ? '自定义' : `<span>${s.price}</span> 张`;
-    const isCustom = !DEFAULT_SERVICES.find(d => d.id === s.id);
     return `<div class="service-card" onclick="openRedeem('${s.id}')">
       <span class="icon">${s.icon}</span>
-      <div class="name">${s.name}${isCustom ? '' : ''}</div>
+      <div class="name">${s.name}</div>
       <div class="price">${priceText}</div>
     </div>`;
   }).join('') + `
@@ -513,22 +917,18 @@ function renderHistory() {
     list.innerHTML = '<div class="history-empty">还没有兑换记录</div>';
     return;
   }
-  list.innerHTML = history.slice().reverse().map(h => `
-    <div class="history-item">
+  list.innerHTML = history.slice().reverse().map(h => {
+    const costClass = h.type === 'earn' ? 'hi-earn' : 'hi-cost';
+    const prefix = h.type === 'earn' ? '+' : '-';
+    return `<div class="history-item">
       <span class="hi-icon">${h.icon}</span>
       <div class="hi-info">
         <div class="hi-name">${h.name}${h.detail ? ' · ' + h.detail : ''}</div>
         <div class="hi-time">${h.time}</div>
       </div>
-      <div class="hi-cost">-${h.cost}</div>
-    </div>
-  `).join('');
-}
-
-function renderAll() {
-  renderBalance();
-  renderServices();
-  renderHistory();
+      <div class="${costClass}">${prefix}${h.cost}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============ 兑换 ============
@@ -536,14 +936,13 @@ function openRedeem(id) {
   const s = services.find(x => x.id === id);
   if (!s) return;
   currentService = s;
+  modalMode = 'redeem';
   document.getElementById('modalIcon').textContent = s.icon;
   document.getElementById('modalTitle').textContent = s.name;
+  document.getElementById('deleteBtn').style.display = 'none';
+  resetConfirmBtn();
 
-  const isCustom = !DEFAULT_SERVICES.find(d => d.id === s.id);
-  document.getElementById('deleteBtn').style.display = isCustom ? 'block' : 'none';
-
-  const body = document.getElementById('modalBody');
-  body.innerHTML = `
+  document.getElementById('modalBody').innerHTML = `
     <div class="price-row">
       <label style="margin-bottom:0;white-space:nowrap">价格：</label>
       <input type="number" id="redeemPrice" value="${s.price}" min="0" max="${coupons}">
@@ -554,12 +953,16 @@ function openRedeem(id) {
   `;
 
   document.getElementById('modal').classList.add('active');
-  setTimeout(() => document.getElementById('redeemPrice').focus(), 300);
+  setTimeout(() => {
+    const inp = document.getElementById('redeemPrice');
+    if (inp) inp.focus();
+  }, 300);
 }
 
 function closeModal() {
   document.getElementById('modal').classList.remove('active');
   currentService = null;
+  modalMode = null;
 }
 
 function confirmRedeem() {
@@ -580,6 +983,7 @@ function confirmRedeem() {
   const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
   history.push({
+    type: 'spend',
     icon: currentService.icon,
     name: currentService.name,
     detail: note,
@@ -590,20 +994,128 @@ function confirmRedeem() {
   save();
   renderAll();
   closeModal();
+  playSound('redeem');
   spawnConfetti();
   showToast(`兑换成功！消耗 ${cost} 张摸摸券`);
   sendNotification(currentService, cost, note);
 }
 
+// ============ 留言 ============
+function openWriteMessage() {
+  modalMode = 'message';
+  currentService = null;
+  document.getElementById('modalIcon').textContent = '💌';
+  document.getElementById('modalTitle').textContent = '写留言';
+  document.getElementById('deleteBtn').style.display = 'none';
+  resetConfirmBtn();
+  document.getElementById('confirmBtn').textContent = '发送';
+  document.getElementById('confirmBtn').onclick = confirmWriteMessage;
+
+  document.getElementById('modalBody').innerHTML = `
+    <label>想对她说的话</label>
+    <textarea id="msgText" rows="3" placeholder="小可爱，今天也要开心哦~"></textarea>
+  `;
+
+  document.getElementById('modal').classList.add('active');
+}
+
+function confirmWriteMessage() {
+  const text = document.getElementById('msgText').value.trim();
+  if (!text) { showToast('写点什么吧'); return; }
+
+  const now = new Date();
+  const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  messages.push({ text, time: timeStr });
+  save();
+  renderAll();
+  closeModal();
+  showToast('留言已发送');
+}
+
+// ============ 三餐记录 ============
+function openRecordMeal() {
+  modalMode = 'meal';
+  currentService = null;
+  document.getElementById('modalIcon').textContent = '🍽️';
+  document.getElementById('modalTitle').textContent = '记录一餐';
+  document.getElementById('deleteBtn').style.display = 'none';
+  resetConfirmBtn();
+  document.getElementById('confirmBtn').textContent = '记录';
+  document.getElementById('confirmBtn').onclick = confirmRecordMeal;
+
+  const meals = ['早餐', '午餐', '晚餐', '下午茶', '夜宵', '零食'];
+  document.getElementById('modalBody').innerHTML = `
+    <label>哪一餐</label>
+    <select id="mealType" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;margin-bottom:12px;outline:none">
+      ${meals.map(m => `<option value="${m}">${m}</option>`).join('')}
+    </select>
+    <label>吃了什么</label>
+    <input type="text" id="mealContent" placeholder="比如：吃了面包和牛奶">
+    <label>好不好吃</label>
+    <input type="text" id="mealTaste" placeholder="比如：好吃！/ 一般般 / 不太行">
+  `;
+
+  document.getElementById('modal').classList.add('active');
+}
+
+function confirmRecordMeal() {
+  const mealType = document.getElementById('mealType').value;
+  const content = document.getElementById('mealContent').value.trim();
+  const taste = document.getElementById('mealTaste').value.trim();
+
+  if (!content) { showToast('填一下吃了什么吧'); return; }
+
+  const now = new Date();
+  const today = now.toLocaleDateString('zh-CN');
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  mealRecords.push({
+    date: today,
+    meal: mealType,
+    content: taste ? `${content}，${taste}` : content,
+    time: timeStr,
+  });
+
+  // 检查是否该发券了
+  const totalMeals = mealRecords.length;
+  const earnedFromMeals = mealsGranted;
+  const newEarned = Math.floor(totalMeals / 3) - earnedFromMeals;
+
+  if (newEarned > 0) {
+    coupons += newEarned;
+    mealsGranted += newEarned;
+    history.push({
+      type: 'earn',
+      icon: '🍽️',
+      name: '三餐记录奖励',
+      detail: `累计记录 ${totalMeals} 餐`,
+      cost: newEarned,
+      time: timeStr,
+    });
+    playSound('earn');
+    showToast(`🎉 三餐记录达标！获得 ${newEarned} 张摸摸券`);
+  } else {
+    showToast(`已记录！还差 ${3 - (totalMeals % 3)} 餐得券`);
+  }
+
+  save();
+  renderAll();
+  closeModal();
+}
+
 // ============ 添加/删除服务 ============
 function openAddService() {
+  modalMode = 'addService';
   currentService = null;
   document.getElementById('modalIcon').textContent = '➕';
   document.getElementById('modalTitle').textContent = '添加服务';
   document.getElementById('deleteBtn').style.display = 'none';
+  resetConfirmBtn();
+  document.getElementById('confirmBtn').textContent = '添加';
+  document.getElementById('confirmBtn').onclick = confirmAddService;
 
-  const body = document.getElementById('modalBody');
-  body.innerHTML = `
+  document.getElementById('modalBody').innerHTML = `
     <label>图标（emoji）</label>
     <input type="text" id="newIcon" value="🎁" placeholder="选一个emoji">
     <label>服务名称</label>
@@ -615,8 +1127,6 @@ function openAddService() {
     </div>
   `;
 
-  document.getElementById('confirmBtn').textContent = '添加';
-  document.getElementById('confirmBtn').onclick = confirmAddService;
   document.getElementById('modal').classList.add('active');
 }
 
@@ -633,7 +1143,6 @@ function confirmAddService() {
   renderAll();
   closeModal();
   showToast(`已添加「${name}」`);
-  resetConfirmBtn();
 }
 
 function deleteService() {
@@ -660,9 +1169,7 @@ function sendNotification(service, cost, detail) {
     ? `服务：${detail}\n消耗：${cost} 张摸摸券\n剩余：${coupons} 张`
     : `消耗：${cost} 张摸摸券\n剩余：${coupons} 张`);
 
-  const url = `https://sctapi.ftqq.com/${SERVER_KEY}.send?title=${title}&desp=${content}`;
-  const img = new Image();
-  img.src = url;
+  new Image().src = `https://sctapi.ftqq.com/${SERVER_KEY}.send?title=${title}&desp=${content}`;
 }
 
 // ============ 管理 ============
@@ -683,6 +1190,9 @@ function resetAll() {
     coupons = INITIAL_COUPONS;
     history = [];
     customServices = [];
+    messages = [];
+    mealRecords = [];
+    mealsGranted = 0;
     save();
     renderAll();
     showToast('已重置');
