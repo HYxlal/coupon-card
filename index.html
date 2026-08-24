@@ -367,8 +367,7 @@ body {
 
   <div class="header">
     <div class="header-title">🐱 小猫猫的摸摸券银行</div>
-    <!-- 线条小狗：如需替换更清晰的图，把PNG放 assets/line-dog.png 即可 -->
-    <img class="header-dog" id="headerDog" alt="线条小狗">
+    <canvas class="header-dog" id="headerDog" width="160" height="160"></canvas>
   </div>
 
   <div class="balance-section">
@@ -431,65 +430,73 @@ const DEFAULT_SERVICES = [
 
 const INITIAL_COUPONS = 20;
 
-// ============ 线条小狗 PNG 生成 ============
-// 如需替换更好看的图，把PNG放到 assets/line-dog.png，然后删掉下面这行
-function genLineDogPNG() {
-  const c = document.createElement('canvas');
-  c.width = 160; c.height = 160;
+// ============ 线条小狗动效 ============
+// 如需替换静态图，把PNG/GIF放 assets/line-dog.png 替换下面代码
+(function animateDog() {
+  const c = document.getElementById('headerDog');
+  if (!c) return;
   const t = c.getContext('2d');
-  t.imageSmoothingEnabled = true;
-  t.scale(2, 2);
+  let frame = 0;
 
-  function roundRect(x, y, w, h, r) {
-    t.beginPath(); t.moveTo(x+r, y); t.lineTo(x+w-r, y);
-    t.arcTo(x+w, y, x+w, y+r, r); t.lineTo(x+w, y+h-r);
-    t.arcTo(x+w, y+h, x+w-r, y+h, r); t.lineTo(x+r, y+h);
-    t.arcTo(x, y+h, x, y+h-r, r); t.lineTo(x, y+r);
-    t.arcTo(x, y, x+r, y, r); t.closePath();
+  function draw() {
+    t.clearRect(0, 0, 160, 160);
+    t.imageSmoothingEnabled = true;
+    t.save();
+    t.translate(80, 70);
+    // 身体微微上下浮动
+    const bob = Math.sin(frame * 0.05) * 2;
+    t.translate(0, bob);
+
+    t.strokeStyle = '#4a3728'; t.lineWidth = 2.2; t.lineCap = 'round'; t.lineJoin = 'round';
+
+    // 身体
+    t.fillStyle = '#fff';
+    t.beginPath(); t.ellipse(0, 12, 17, 15, 0, 0, Math.PI*2); t.fill(); t.stroke();
+
+    // 头
+    t.beginPath(); t.ellipse(0, -8, 15, 13, 0, 0, Math.PI*2); t.fill(); t.stroke();
+
+    // 耳朵 - 微微抖动
+    const earWiggle = Math.sin(frame * 0.08) * 1.5;
+    t.fillStyle = '#FFE0B2';
+    t.beginPath(); t.moveTo(-12, -14); t.lineTo(-18 + earWiggle, -28); t.lineTo(-6, -18); t.closePath(); t.fill(); t.stroke();
+    t.beginPath(); t.moveTo(12, -14); t.lineTo(18 - earWiggle, -28); t.lineTo(6, -18); t.closePath(); t.fill(); t.stroke();
+
+    // 眼睛 - 偶尔眨眼
+    const blink = Math.sin(frame * 0.03) > 0.92 ? 0.5 : 1;
+    t.fillStyle = '#4a3728';
+    t.save(); t.scale(1, blink); t.beginPath(); t.arc(-6, -8, 2.5, 0, Math.PI*2); t.fill(); t.restore();
+    t.save(); t.scale(1, blink); t.beginPath(); t.arc(7, -8, 2.5, 0, Math.PI*2); t.fill(); t.restore();
+
+    // 鼻子
+    t.beginPath(); t.arc(0.5, -5, 2, 0, Math.PI*2); t.fill();
+
+    // 嘴
+    t.strokeStyle = '#4a3728'; t.lineWidth = 1.5;
+    t.beginPath(); t.moveTo(0.5, -3); t.lineTo(-2, 1); t.moveTo(0.5, -3); t.lineTo(3, 1); t.stroke();
+
+    // 腮红
+    t.fillStyle = 'rgba(255,150,150,0.45)';
+    t.beginPath(); t.arc(-10, -4, 3.5, 0, Math.PI*2); t.fill();
+    t.beginPath(); t.arc(12, -4, 3.5, 0, Math.PI*2); t.fill();
+
+    // 前腿
+    t.strokeStyle = '#4a3728'; t.lineWidth = 2;
+    t.beginPath(); t.moveTo(-10, 22); t.lineTo(-12, 32); t.moveTo(8, 22); t.lineTo(10, 32); t.stroke();
+
+    // 尾巴 - 摇尾巴动效
+    const tailWag = Math.sin(frame * 0.1) * 15;
+    t.strokeStyle = '#4a3728'; t.lineWidth = 2;
+    t.beginPath(); t.moveTo(15, 6);
+    t.quadraticCurveTo(26 + tailWag, tailWag - 4, 22 + tailWag * 0.5, tailWag - 14);
+    t.stroke();
+
+    t.restore();
+    frame++;
+    requestAnimationFrame(draw);
   }
-
-  t.strokeStyle = '#4a3728'; t.lineWidth = 2.2; t.lineCap = 'round'; t.lineJoin = 'round';
-
-  // 身体
-  t.fillStyle = '#fff';
-  roundRect(24, 42, 32, 28, 14); t.fill(); t.stroke();
-
-  // 头
-  roundRect(26, 18, 28, 24, 12); t.fill(); t.stroke();
-
-  // 耳朵
-  t.fillStyle = '#FFE0B2';
-  t.beginPath(); t.moveTo(28, 22); t.lineTo(22, 8); t.lineTo(34, 18); t.closePath(); t.fill(); t.stroke();
-  t.beginPath(); t.moveTo(52, 22); t.lineTo(58, 8); t.lineTo(46, 18); t.closePath(); t.fill(); t.stroke();
-
-  // 眼睛
-  t.fillStyle = '#4a3728';
-  t.beginPath(); t.arc(34, 28, 2.5, 0, Math.PI*2); t.fill();
-  t.beginPath(); t.arc(47, 28, 2.5, 0, Math.PI*2); t.fill();
-
-  // 鼻子
-  t.beginPath(); t.arc(40.5, 31, 2, 0, Math.PI*2); t.fill();
-
-  // 嘴
-  t.strokeStyle = '#4a3728'; t.lineWidth = 1.5;
-  t.beginPath(); t.moveTo(40.5, 33); t.lineTo(38, 36); t.moveTo(40.5, 33); t.lineTo(43, 36); t.stroke();
-
-  // 腮红
-  t.fillStyle = 'rgba(255,150,150,0.45)';
-  t.beginPath(); t.arc(30, 32, 3.5, 0, Math.PI*2); t.fill();
-  t.beginPath(); t.arc(52, 32, 3.5, 0, Math.PI*2); t.fill();
-
-  // 前腿
-  t.strokeStyle = '#4a3728'; t.lineWidth = 2;
-  t.beginPath(); t.moveTo(30, 63); t.lineTo(27, 73); t.moveTo(48, 63); t.lineTo(51, 73); t.stroke();
-
-  // 尾巴
-  t.beginPath(); t.moveTo(54, 46); t.quadraticCurveTo(66, 36, 62, 26); t.stroke();
-
-  return c.toDataURL('image/png');
-}
-
-document.getElementById('headerDog').src = genLineDogPNG();
+  draw();
+})();
 
 // ============ 音效 ============
 function playSound(type) {
